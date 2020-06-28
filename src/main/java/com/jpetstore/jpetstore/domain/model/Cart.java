@@ -25,15 +25,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 
 /**
  * @author Eduardo Macarron
  */
 @Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+@SessionScope
 public class Cart implements Serializable {
 
 	private static final long serialVersionUID = 8329559983943337176L;
