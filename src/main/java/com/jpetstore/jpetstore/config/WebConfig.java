@@ -91,7 +91,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public DozerBeanMapper dozerBeanMapper() {
 		DozerBeanMapper bean = new DozerBeanMapper();
 
-		List<String> mappingFiles = Arrays.asList("classpath*:/dozer/**/*-mapping.xml");
+		List<String> mappingFiles = Arrays.asList("classpath:/dozer/account-mapping.xml");
 		bean.setMappingFiles(mappingFiles);
 		return bean;
 	}
