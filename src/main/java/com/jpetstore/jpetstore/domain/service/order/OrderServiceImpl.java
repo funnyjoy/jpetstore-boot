@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ import com.jpetstore.jpetstore.domain.service.catalog.CatalogService;
 /**
  * @author Eduardo Macarron
  */
+@RefreshScope
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -47,7 +49,8 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int insertOrder(Order order) {
 		HttpEntity<Order> requestEntity = new HttpEntity<Order>(order);
-		ResponseEntity<Integer> responseEntity = restTemplate.exchange(ORDER_SERVICE_URL + "/orders", HttpMethod.PUT, requestEntity, Integer.class);
+		ResponseEntity<Integer> responseEntity = restTemplate.exchange(ORDER_SERVICE_URL + "/orders", HttpMethod.PUT,
+				requestEntity, Integer.class);
 		return responseEntity.getBody().intValue();
 	}
 
