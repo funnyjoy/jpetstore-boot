@@ -1,6 +1,6 @@
 package com.jpetstore.jpetstore.config;
 
-import javax.inject.Inject;
+import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Inject
+	@Resource(name = "userDetailsService")
 	UserDetailsService userDetailsService;
 
 	@Bean
@@ -36,11 +36,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// 페이지 권한 설정
-				.antMatchers("/account/editAccount*").authenticated().antMatchers("/order/**").authenticated()
-				.antMatchers("/**").permitAll().and() // 로그인 설정
-				.formLogin().loginPage("/account/signonForm").loginProcessingUrl("/account/signon")
-				.failureUrl("/account/signonForm?error=true").and().logout().deleteCookies("JSESSIONID")
-				.logoutUrl("/account/signoff").logoutSuccessUrl("/").invalidateHttpSession(true);
+				.antMatchers("/account/editAccount*").authenticated()
+				.antMatchers("/order/**").authenticated()
+				.antMatchers("/**").permitAll().and()
+				.csrf().disable()
+				.formLogin()
+					.loginPage("/account/signonForm")
+					.loginProcessingUrl("/account/signon")
+					.usernameParameter("j_username")
+					.passwordParameter("j_password")
+					.failureUrl("/account/signonForm?error=true").and()
+				.logout()
+					.deleteCookies("JSESSIONID")
+					.logoutUrl("/account/signoff")
+					.logoutSuccessUrl("/")
+					.invalidateHttpSession(true);
 	}
 
 	@Override

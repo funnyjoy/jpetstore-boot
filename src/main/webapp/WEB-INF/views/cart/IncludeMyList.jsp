@@ -1,3 +1,4 @@
+<%@ include file="../common/include.jsp"%>
 <sec:authorize access="isAuthenticated()">
     <p>
         Pet Favorites <br /> Shop for more of your favorite pets here.
