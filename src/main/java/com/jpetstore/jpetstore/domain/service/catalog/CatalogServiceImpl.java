@@ -16,10 +16,12 @@
 
 package com.jpetstore.jpetstore.domain.service.catalog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,10 +29,12 @@ import org.springframework.web.client.RestTemplate;
 import com.jpetstore.jpetstore.domain.model.Category;
 import com.jpetstore.jpetstore.domain.model.Item;
 import com.jpetstore.jpetstore.domain.model.Product;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * @author Eduardo Macarron
  */
+@EnableCircuitBreaker
 @RefreshScope
 @Service
 public class CatalogServiceImpl implements CatalogService {
@@ -42,46 +46,101 @@ public class CatalogServiceImpl implements CatalogService {
 	private String PRODUCT_SERVICE_URL;
 
 	@SuppressWarnings("unchecked")
+	@HystrixCommand(fallbackMethod = "getCategoryListFallback")
 	@Override
 	public List<Category> getCategoryList() {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/categories", List.class);
 	}
 
+	@SuppressWarnings("unused")
+	private List<Category> getCategoryListFallback() {
+		return new ArrayList<>();
+	}
+
+	@HystrixCommand(fallbackMethod = "getCategoryFallback")
 	@Override
 	public Category getCategory(String categoryId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/categories/" + categoryId, Category.class);
 	}
 
+	@SuppressWarnings("unused")
+	private Category getCategoryFallback(String categoryId) {
+		Category category = new Category();
+		category.setCategoryId(categoryId);
+		return category;
+	}
+
+	@HystrixCommand(fallbackMethod = "getProductFallback")
 	@Override
 	public Product getProduct(String productId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/products/" + productId, Product.class);
 	}
 
+	@SuppressWarnings("unused")
+	private Product getProductFallback(String productId) {
+		Product product = new Product();
+		product.setProductId(productId);
+		return product;
+	}
+
+	@HystrixCommand(fallbackMethod = "getProductListByCategoryFallback")
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Product> getProductListByCategory(String categoryId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/categories/" + categoryId + "/products", List.class);
 	}
 
+	@SuppressWarnings("unused")
+	private List<Product> getProductListByCategoryFallback(String categoryId) {
+		return new ArrayList<>();
+	}
+
+	@HystrixCommand(fallbackMethod = "searchProductListFallback")
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Product> searchProductList(String keywords) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/products?keywords=" + keywords, List.class);
 	}
 
+	@SuppressWarnings("unused")
+	private List<Product> searchProductListFallback(String keywords) {
+		return new ArrayList<>();
+	}
+
+	@HystrixCommand(fallbackMethod = "getItemListByProductFallback")
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Item> getItemListByProduct(String productId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/products/" + productId + "/items", List.class);
 	}
 
+	@SuppressWarnings("unused")
+	private List<Item> getItemListByProductFallback(String productId) {
+		return new ArrayList<>();
+	}
+
+	@HystrixCommand(fallbackMethod = "getItemFallback")
 	@Override
 	public Item getItem(String itemId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/items/" + itemId, Item.class);
 	}
 
+	@SuppressWarnings("unused")
+	private Item getItemFallback(String itemId) {
+
+		Item item = new Item();
+		item.setItemId(itemId);
+		return item;
+	}
+
+	@HystrixCommand(fallbackMethod = "isItemInStockFallback")
 	@Override
 	public boolean isItemInStock(String itemId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/items/" + itemId + "/instock", Boolean.class);
+	}
+
+	@SuppressWarnings("unused")
+	private boolean isItemInStockFallback(String itemId) {
+		return false;
 	}
 }
