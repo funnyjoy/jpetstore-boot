@@ -30,6 +30,7 @@ import com.jpetstore.jpetstore.domain.model.Category;
 import com.jpetstore.jpetstore.domain.model.Item;
 import com.jpetstore.jpetstore.domain.model.Product;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 /**
  * @author Eduardo Macarron
@@ -57,7 +58,14 @@ public class CatalogServiceImpl implements CatalogService {
 		return new ArrayList<>();
 	}
 
-	@HystrixCommand(fallbackMethod = "getCategoryFallback")
+	@HystrixCommand(fallbackMethod = "getCategoryFallback",
+			commandProperties = {
+		            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500"),
+		            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+		            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2"),
+		            @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "10000"),
+		            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000"),
+		        })
 	@Override
 	public Category getCategory(String categoryId) {
 		return restTemplate.getForObject(PRODUCT_SERVICE_URL + "/categories/" + categoryId, Category.class);
@@ -83,7 +91,14 @@ public class CatalogServiceImpl implements CatalogService {
 		return product;
 	}
 
-	@HystrixCommand(fallbackMethod = "getProductListByCategoryFallback")
+	@HystrixCommand(fallbackMethod = "getProductListByCategoryFallback",
+			commandProperties = {
+		            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500"),
+		            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+		            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2"),
+		            @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "10000"),
+		            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000"),
+		        })
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Product> getProductListByCategory(String categoryId) {
