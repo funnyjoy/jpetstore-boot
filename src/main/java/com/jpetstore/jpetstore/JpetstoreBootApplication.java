@@ -7,9 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import com.jpetstore.jpetstore.config.MyJspConfigDescriptor;
 
+@EnableFeignClients
 @SpringBootApplication
 public class JpetstoreBootApplication extends SpringBootServletInitializer {
 

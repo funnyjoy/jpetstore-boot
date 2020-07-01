@@ -15,8 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -96,13 +94,13 @@ public class WebConfig implements WebMvcConfigurer {
 		return bean;
 	}
 
-	@Bean
-	public RestTemplate getCustomRestTemplate() {
-		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-		httpRequestFactory.setConnectTimeout(5000);
-		httpRequestFactory.setReadTimeout(5000);
-		return new RestTemplate(httpRequestFactory);
-	}
+//	@Bean
+//	public RestTemplate getCustomRestTemplate() {
+//		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//		httpRequestFactory.setConnectTimeout(5000);
+//		httpRequestFactory.setReadTimeout(5000);
+//		return new RestTemplate(httpRequestFactory);
+//	}
 
 	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
