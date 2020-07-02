@@ -14,7 +14,7 @@ import com.jpetstore.jpetstore.domain.model.Item;
 import com.jpetstore.jpetstore.domain.model.Product;
 
 @RefreshScope
-@FeignClient(name = "catalog-api", url = "${product.service.url}", fallback = CatalogServiceFallback.class)
+@FeignClient(name = "catalog-api", fallback = CatalogServiceFallback.class)
 @Service
 public interface CatalogService {
 

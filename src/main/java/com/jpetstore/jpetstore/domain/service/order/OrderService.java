@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.jpetstore.jpetstore.domain.model.Order;
 
 @RefreshScope
-@FeignClient(name = "order-api", url = "${order.service.url}", fallback = OrderServiceFallback.class)
+@FeignClient(name = "order-api", fallback = OrderServiceFallback.class)
 @Service
 public interface OrderService {
 
