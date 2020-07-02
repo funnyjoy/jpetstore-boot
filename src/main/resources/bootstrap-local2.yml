@@ -12,15 +12,3 @@ logging:
     org.apache.http.impl: debug
     com.jpetstore.jpetstore: debug
     feign: debug
-
-order-api:
-  ribbon:
-    eureka:
-      enabled: false
-    listOfServers: localhost:16061,localhost:16062
-
-catalog-api:
-  ribbon:
-    eureka:
-      enabled: false
-    listOfServers: localhost:17071,localhost:17072
