@@ -14,6 +14,9 @@
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="Pragma" content="no-cache" />
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script> 
+
 </head>
 
 <body>
