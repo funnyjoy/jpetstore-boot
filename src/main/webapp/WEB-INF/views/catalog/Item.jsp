@@ -1,49 +1,66 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 
 <div id="BackLink">
-    <a
-        href="${pageContext.request.contextPath}/catalog/viewProduct?productId=${f:h(product.productId)}">Return
-        to ${f:h(product.productId)}</a>
 </div>
 
 <div id="Catalog">
 
     <table>
         <tr>
-            <td>${product.description}<%--  XSS Vulnerable! --%></td>
+            <td id="description"></td>
         </tr>
         <tr>
-            <td><b> ${f:h(item.itemId)} </b></td>
+            <td><b id="itemId"></b></td>
         </tr>
         <tr>
-            <td><b><font size="4">
-                        ${f:h(item.attribute1)} ${f:h(item.attribute2)}
-                        ${f:h(item.attribute3)} ${f:h(item.attribute4)}
-                        ${f:h(item.attribute5)} ${f:h(product.name)} </font></b></td>
+            <td><b><font size="4" id="attributes"></font></b></td>
         </tr>
         <tr>
-            <td>${f:h(product.name)}</td>
+            <td id="productName"></td>
         </tr>
         <tr>
-            <td><c:if test="${item.quantity <= 0}">
-        Back ordered.
-      </c:if> <c:if test="${item.quantity > 0}">
-      	${f:h(item.quantity)} in stock.
-	  </c:if></td>
+            <td id="quantity"></td>
         </tr>
         <tr>
-            <td><fmt:formatNumber value="${f:h(item.listPrice)}"
-                    pattern="$#,##0.00" /></td>
+            <td id="listPrice"></td>
         </tr>
 
         <tr>
-            <td><a
-                href="${pageContext.request.contextPath}/cart/addItemToCart?workingItemId=${f:h(item.itemId)}">
-                    Add to Cart</a></td>
+            <td id="addToCartLink"></td>
         </tr>
     </table>
 
 </div>
+
+<script>
+var itemId = '<%= request.getParameter("itemId") %>';
+
+$.ajax({
+    url: "/items/" + itemId,
+    type: "GET",
+    cache: false,
+    dataType: "json",
+    success: function(data){
+        var item = data;
+        var product = data.product;
+        $('#BackLink').append("<a href='/catalog/viewProduct?productId=" + product.productId + "'>Return to " + product.productId + "</a>");
+        $('#description').append(product.description);
+        $('#itemId').text(item.itemId);
+        $('#attributes').text(item.attribute1 + " " + item.attribute2 + " " + item.attribute3 + " " + item.attribute4 + " " + item.attribute5 + " " + product.name);
+        $('#productName').text(product.name);
+        if (item.quantity <= 0)
+            $('#quantity').text("Back ordered.");
+        else $('#quantity').text(item.quantity + " in stock.");
+        $('#listPrice').text(item.listPrice);
+        $('#addToCartLink').append("<a href='/cart/addItemToCart?workingItemId=" + item.itemId + "'>Add to Cart</a>")
+    },
+    error: function (request, status, error){        
+        var msg = "ERROR : " + request.status + "<br>"
+        msg +=  + "내용 : " + request.responseText + "<br>" + error;
+        console.log(msg);              
+    }
+});
+</script>
 
 <%@ include file="../common/IncludeBottom.jsp"%>
 

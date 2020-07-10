@@ -13,25 +13,6 @@
             <th>Name</th>
         </tr>
     </table>
-
-
-<%
-//    <h2>${f:h(category.name)}</h2>
-//
-//    <table>
-//        <tr>
-//            <th>Product ID</th>
-//            <th>Name</th>
-//        </tr>
-//        <c:forEach var="product" items="${productList}">
-//            <tr>
-//                <td><a
-//                    href="${pageContext.request.contextPath}/catalog/viewProduct?productId=${f:h(product.productId)}">${f:h(product.productId)}</a></td>
-//                <td>${f:h(product.name)}</td>
-//            </tr>
-//        </c:forEach>
-//    </table>
-%>
 </div>
 
 <script>
@@ -60,7 +41,7 @@ $.ajax({
     dataType: "json",
     success: function(data){
         $.each(data, function() {
-            $("#productList").append("<tr><td><a href='catalog/viewProduct?produdctId=" + this.productId + "'>" + this.productId + "</a></td><td>" + this.name + "</td></tr>")
+            $("#productList").append("<tr><td><a href='/catalog/viewProduct?productId=" + this.productId + "'>" + this.productId + "</a></td><td>" + this.name + "</td></tr>")
         });
     },
     error: function (request, status, error){        
