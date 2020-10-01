@@ -5,7 +5,7 @@ USER appuser
 
 WORKDIR /home/appuser 
 ARG JAR_FILE 
-COPY target/${JAR_FILE} app.jar 
+COPY target/${JAR_FILE} app.war 
 
 ENV PROFILE=local 
 ENV SPRING_CLOUD_CONFIG_URI=http://configserver:8888
@@ -21,4 +21,4 @@ ENV RABBITMQ_USERNAME=jpetstore
 ENV RABBITMQ_PASSWORD=qwer1234
 ENV EUREKA_DEFAULTZONE=http://eurekaserver:8761/eureka/,http://eurekaserver2:8762/eureka/
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.war"]

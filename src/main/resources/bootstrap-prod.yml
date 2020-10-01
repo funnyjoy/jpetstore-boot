@@ -19,3 +19,4 @@ logging:
     org.apache.http.impl: warn
     com.jpetstore.jpetstore: warn
     feign: warn
+    org.springframework: warn
