@@ -1,6 +1,6 @@
-FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u222-b10 
-RUN apk --no-cache add curl 
-RUN adduser -D -s /bin/sh appuser 
+FROM adoptopenjdk:11-jdk-hotspot
+RUN apt update && apt upgrade -y && apt install -y curl 
+RUN adduser --home /home/appuser --shell /bin/sh appuser 
 USER appuser 
 
 WORKDIR /home/appuser 
@@ -21,4 +21,8 @@ ENV RABBITMQ_USERNAME=jpetstore
 ENV RABBITMQ_PASSWORD=qwer1234
 ENV EUREKA_DEFAULTZONE=http://eurekaserver:8761/eureka/,http://eurekaserver2:8762/eureka/
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.war"]
+RUN echo "java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${PROFILE} -jar app.war" > run.sh
+
+#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=${PROFILE}","-jar","app.war"]
+ENTRYPOINT ["sh", "run.sh"]
+
