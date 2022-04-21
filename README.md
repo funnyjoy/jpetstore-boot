@@ -12,6 +12,8 @@ docker run --name orderdb_msa -d --network jpetstore-network -p 23306:3306 jaypa
 
 docker run --name productdb_msa --network jpetstore-network -d -p 33306:3306 jaypark00/productdb:msa_v1
 
+docker run --name scouterserver --network jpetstore-network -p 6100:6100 -d -ti scouterserver:msa_v2
+
 docker run --name configserver --network jpetstore-network -e DEFAULT_BRANCH=gcp-firsttime -d -p 8888:8888 jaypark00/configserver:msa_v1
 
 docker run --name eurekaserver --network jpetstore-network -e PROFILE=prod -e SPRING_CLOUD_CONFIG_URI=http://configserver:8888 -e EUREKA_PORT=8761 -e OTHER_EUREKA_URI=eurekaserver2:8762 -d -p 8761:8761 jaypark00/eurekaserver:msa_v1
