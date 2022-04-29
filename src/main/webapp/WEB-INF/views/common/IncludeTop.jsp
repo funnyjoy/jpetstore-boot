@@ -102,6 +102,3 @@
     </div>
 
     <div id="Content">
-        <c:if test="${!empty message}">
-            <p>${f:h(message)}</p>
-        </c:if>

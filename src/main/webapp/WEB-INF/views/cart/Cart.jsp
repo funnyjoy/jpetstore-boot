@@ -24,12 +24,6 @@
                     <th>&nbsp;</th>
                 </tr>
 
-                <c:if test="${actionBean.cart.numberOfItems == 0}">
-                    <tr>
-                        <td colspan="8"><b>Your cart is empty.</b></td>
-                    </tr>
-                </c:if>
-
                 <c:forEach var="cartItem" items="${cart.cartItems}">
                     <tr>
                         <td><a
