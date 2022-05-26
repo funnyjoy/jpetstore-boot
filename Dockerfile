@@ -45,6 +45,6 @@ RUN echo "===== Scouter Configuration =====" \
     && echo "===== Run Script Shell =====" \
     && echo "/home/appuser/filebeat-7.13.0-linux-x86_64/filebeat --path.home /home/appuser/filebeat-7.13.0-linux-x86_64 &" >> run.sh \
     && echo "cd /home/appuser/scouter/agent.host && ./host.sh" >> run.sh \
-    && echo "cd /home/appuser && java -XX:StringTableSize=1000001 -javaagent:/home/appuser/scouter/agent.java/scouter.agent.jar -Dscouter.config=/home/appuser/scouter/agent.java/conf/scouter.conf -Dobj_name=\`hostname\` -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=\${PROFILE} -jar app.war" >> run.sh
+    && echo "cd /home/appuser && java -Xmx512m -XX:StringTableSize=1000001 -javaagent:/home/appuser/scouter/agent.java/scouter.agent.jar -Dscouter.config=/home/appuser/scouter/agent.java/conf/scouter.conf -Dobj_name=\`hostname\` -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=\${PROFILE} -jar app.war" >> run.sh
 
 ENTRYPOINT ["sh", "run.sh"]
