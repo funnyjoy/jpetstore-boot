@@ -28,7 +28,7 @@ ENV ELASTICSEARCH_HOSTS=elasticsearch:9200
 ENV KIBANA_HOST=kibana:5601
 ENV ZIPKIN_URI=http://zipkin:9411/
 
-RUN wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.13.0-linux-x86_64.tar.gz && tar xvfz filebeat-7.13.0-linux-x86_64.tar.gz
+RUN wget --no-check-certificate https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.13.0-linux-x86_64.tar.gz && tar xvfz filebeat-7.13.0-linux-x86_64.tar.gz
 COPY filebeat.yml /home/appuser/filebeat-7.13.0-linux-x86_64/filebeat.yml
 
 RUN echo "===== Run Script Shell =====" \
